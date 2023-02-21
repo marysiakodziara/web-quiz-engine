@@ -6,8 +6,8 @@ The web service provides endpoints for handling all CRUD (Create, Read, Update, 
 ## Table of Contents
 - [Technologies Used](#Technologies-Used)
 - [API Endpoints and Business Logic](#API-Endpoints-and-Business-Logic)
-- [Exception Handling](#Exception-Handling)
-- [Running the Application](#Running-the-Application)
+- [Business Logic](#Business-Logic)
+- [Conclusion](#Conclusion)
 
 # Technologies Used
 
@@ -41,7 +41,7 @@ The web service provides endpoints for handling all CRUD (Create, Read, Update, 
 
 3. - `POST /api/v1/quizzes` This endpoint allows authenticated users to create a new quiz.
 
-> The endpoint takes a QuizPostDTO object in the request body that contains the quiz details. \ 
+> The endpoint takes a QuizPostDTO object in the request body that contains the quiz details. \
 > If the request is successful, a 200 OK status code will be returned. 
 
 4. - `POST /api/v1/quizzes/{id}/solve` This endpoint allows authenticated users to solve the quiz with the specified id.
@@ -57,10 +57,22 @@ The web service provides endpoints for handling all CRUD (Create, Read, Update, 
 
 6. - `GET /api/v1/quizzes/completed` This endpoint retrieves all the solved quizzes for the authenticated user.
 
+> The endpoint retrieves all quizzes completed by the authenticated user and a 200 OK status code. 
+
+
+7. - `POST /api/v1/user`  This endpoint allows new users to registrate.
+
+> If the registration is successful, a HTTP 200 OK response is returned to the client. \
+> If the user already exists, a HTTP 400 Bad Request response is returned.
+
 * The endpoint supports pagination and returns a Page object containing the list of solved quizzes. 
 * The endpoint takes a query parameter 'page' to specify the page number. 
 * The response will include a list of all the solved quizzes. 
 
-# Exception Handling
+# Business Logic
 
-> Web Quiz Engine provides the following custom exception handling:
+The Web Quiz Engine application allows users to create quizzes by providing a question, multiple choice answers, and specifying the correct answer. The application checks submitted answers and returns the appropriate feedback to the user. The application also keeps track of solved quizzes, allowing users to see a list of their completed quizzes.
+
+
+# Conclusion
+The Web Quiz Engine is a simple and useful application that demonstrates the use of Spring Boot, Spring Security, and other popular Java libraries. It provides a practical solution for creating and solving quizzes, and can be easily extended to meet other use cases as needed.
