@@ -41,16 +41,18 @@ public class QuizFacade {
         return solvedRegisterService.getAllRecords(pageNumber, email);
     }
 
-    public QuizAnswerBody checkAnswer(PostedAnswer postedAnswer, long id, Authentication auth) {
-        if (quizService.isEqual(id, postedAnswer)) {
+    public QuizAnswerBody checkAnswer(PostedAnswer postedAnswer, Long id, Authentication auth) {
+        boolean isEqual = quizService.isEqual(quizService.getById(id), postedAnswer);
+        if (isEqual) {
             LocalDateTime localDateTime = LocalDateTime.now();
             solvedRegisterService.addRecord(quizService.getById(id), localDateTime, userService.getUser(auth.getName()));
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ///////////
-        return QuizAnswerBody.create(quizService.isEqual(id, postedAnswer));
+        return QuizAnswerBody.create(isEqual);
     }
 
-    public void deleteQuiz(Authentication auth, long id) {
-        quizService.deleteQuiz(auth, id);
+    public void deleteQuiz(Authentication auth, Long id) {
+        boolean authorized = quizService.isQualified(auth, id);
+        quizService.deleteQuiz(authorized, id);
     }
 
 }

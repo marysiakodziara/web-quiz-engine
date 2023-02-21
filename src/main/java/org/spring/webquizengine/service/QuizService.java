@@ -41,31 +41,31 @@ public class QuizService {
         return quizRepository.findAll(paging).map(quizGetMapper::toDTO);
     }
 
-    public QuizGetDTO getQuiz(long id) {
+    public QuizGetDTO getQuiz(Long id) {
         return quizGetMapper.toDTO(quizRepository.findById(id).orElseThrow(
                 () -> new QuizNotFoundException("Quiz with given Id does not exist")));
     }
 
-    public boolean isEqual(long id, PostedAnswer postedAnswer) {
-        return Arrays.equals(quizRepository.getById(id).getAnswer(), postedAnswer.answer());
+    public boolean isEqual(Quiz quiz, PostedAnswer postedAnswer) {
+        return Arrays.equals(quiz.getAnswer(), postedAnswer.answer());
     }
 
-    public boolean isQualified(Authentication auth, long id) {
-        if (quizRepository.findById(id).orElseThrow().getUserQuiz().getEmail().equals(auth.getName())) {
+    public boolean isQualified(Authentication auth, Long id) {
+        if (quizRepository.findById(id).orElseThrow(QuizNotFoundException::new).getUserQuiz().getEmail().equals(auth.getName())) {
             return true;
         }
         throw new NotAuthorizedOperationException("Deleting quizzes of other Users is not supported by the service");
     }
 
-    public void deleteQuiz(Authentication auth, long id) {
-        if (quizRepository.existsById(id) && isQualified(auth, id)) {
+    public void deleteQuiz(Boolean authorized, Long id) {
+        if (quizRepository.existsById(id) && authorized) {
             quizRepository.deleteById(id);
         } else {
             throw new QuizNotFoundException("Quiz with given Id does not exist");
         }
     }
 
-    public Quiz getById(long id) {
+    public Quiz getById(Long id) {
         return quizRepository.findById(id)
                 .orElseThrow(QuizNotFoundException::new);
     }
